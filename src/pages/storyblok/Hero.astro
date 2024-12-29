@@ -1,0 +1,11 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+
+const { blok } = Astro.props
+---
+
+<section {...storyblokEditable(blok)} class="hero">
+  <h1>{blok.title}</h1>
+  <p>{blok.subtitle}</p>
+  {blok.cta && <a href={blok.cta.url} class="cta-button">{blok.cta.text}</a>}
+</section> 

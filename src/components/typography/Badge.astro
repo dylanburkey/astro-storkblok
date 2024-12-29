@@ -1,0 +1,65 @@
+---
+// src/components/typography/Badge.astro
+interface Props {
+  variant?: 'primary' | 'secondary' | 'success' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const { 
+  variant = 'primary',
+  size = 'md',
+  class: className 
+} = Astro.props;
+---
+
+<span class:list={['badge', `badge-${variant}`, `size-${size}`, className]}>
+  <slot />
+</span>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .size-sm {
+    font-size: var(--font-size-xs);
+    padding: 0.25em 0.625em;
+  }
+
+  .size-md {
+    font-size: var(--font-size-sm);
+    padding: 0.375em 0.75em;
+  }
+
+  .size-lg {
+    font-size: var(--font-size-base);
+    padding: 0.5em 1em;
+  }
+
+  .badge-primary {
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  .badge-secondary {
+    background-color: var(--color-cadet);
+    color: var(--color-umber);
+  }
+
+  .badge-success {
+    background-color: #22c55e;
+    color: white;
+  }
+
+  .badge-danger {
+    background-color: #ef4444;
+    color: white;
+  }
+</style>

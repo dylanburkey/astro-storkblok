@@ -1,0 +1,39 @@
+---
+// src/layouts/PageLayout.astro
+
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/navigation/Breadcrumbs.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  breadcrumbs?: {
+    label: string;
+    href?: string;
+  }[];
+}
+
+const { 
+  title, 
+  description,
+  breadcrumbs = []
+} = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  {breadcrumbs.length > 0 && (
+    <div class="container">
+      <Breadcrumbs items={breadcrumbs} />
+    </div>
+  )}
+  
+  <div class="page-layout">
+    <slot />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-layout {
+    padding-block: var(--spacing-xl);
+  }
+</style>

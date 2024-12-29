@@ -1,0 +1,49 @@
+---
+// src/layouts/BlogLayout.astro
+---
+import BaseLayout from './BaseLayout.astro';
+import BlogSidebar from '../components/blog/BlogSidebar.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  showSidebar?: boolean;
+}
+
+const { 
+  title, 
+  description,
+  showSidebar = true 
+} = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="container">
+    <div class="blog-layout">
+      <div class="blog-main">
+        <slot />
+      </div>
+      
+      {showSidebar && (
+        <aside class="blog-sidebar">
+          <BlogSidebar />
+        </aside>
+      )}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .blog-layout {
+    display: grid;
+    gap: var(--spacing-xl);
+    padding-block: var(--spacing-xl);
+  }
+
+  @media (min-width: 1024px) {
+    .blog-layout {
+      grid-template-columns: 1fr 320px;
+    }
+  }
+</style>
+

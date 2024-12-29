@@ -1,0 +1,143 @@
+/* src/styles/design-tokens.css */
+
+/* Base Colors */
+:root {
+    /* Primary Colors */
+    --color-primary: #48acf0;
+    --color-primary-rgb: 72, 172, 240;
+    --color-primary-light: color-mix(in srgb, var(--color-primary) 80%, white);
+    --color-primary-dark: color-mix(in srgb, var(--color-primary) 80%, black);
+  
+    /* Neutral Colors */
+    --color-umber: #594236;
+    --color-umber-2: #6f584b;
+    --color-cadet: #93a3bc;
+    --color-columbia: #ccdde2;
+  
+    /* Semantic Colors */
+    --color-text-primary: var(--color-umber);
+    --color-text-secondary: var(--color-umber-2);
+    --color-text-muted: var(--color-cadet);
+    
+    /* Background Colors */
+    --color-background-primary: #ffffff;
+    --color-background-secondary: var(--color-columbia);
+    --color-background-tertiary: color-mix(in srgb, var(--color-columbia) 40%, white);
+    
+    /* Surface Colors */
+    --color-surface-light: #ffffff;
+    --color-surface-muted: var(--color-columbia);
+    
+    /* Border Colors */
+    --color-border: color-mix(in srgb, var(--color-cadet) 30%, white);
+    --color-border-light: color-mix(in srgb, var(--color-cadet) 15%, white);
+  
+    /* Interactive States */
+    --color-hover: color-mix(in srgb, var(--color-primary) 90%, white);
+    --color-active: color-mix(in srgb, var(--color-primary) 90%, black);
+    --color-focus-ring: color-mix(in srgb, var(--color-primary) 50%, transparent);
+  }
+  
+  /* Typography */
+  :root {
+    /* Font Sizes - Using fluid typography */
+    --font-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+    --font-size-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+    --font-size-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+    --font-size-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+    --font-size-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+    --font-size-2xl: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+    --font-size-3xl: clamp(1.875rem, 1.6rem + 1.375vw, 2.5rem);
+    --font-size-4xl: clamp(2.25rem, 2rem + 1.75vw, 3rem);
+  
+    /* Line Heights */
+    --line-height-tight: 1.2;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+  
+    /* Font Weights */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+  }
+  
+  /* Spacing */
+  :root {
+    /* Base spacing unit: 4px (0.25rem) */
+    --spacing-unit: 0.25rem;
+    
+    /* Spacing scale */
+    --spacing-xs: calc(var(--spacing-unit) * 1);  /* 4px */
+    --spacing-sm: calc(var(--spacing-unit) * 2);  /* 8px */
+    --spacing-md: calc(var(--spacing-unit) * 4);  /* 16px */
+    --spacing-lg: calc(var(--spacing-unit) * 6);  /* 24px */
+    --spacing-xl: calc(var(--spacing-unit) * 8);  /* 32px */
+    --spacing-2xl: calc(var(--spacing-unit) * 12); /* 48px */
+    --spacing-3xl: calc(var(--spacing-unit) * 16); /* 64px */
+    
+    /* Component specific spacing */
+    --container-padding: max(var(--spacing-md), 5vw);
+    --section-spacing: clamp(var(--spacing-2xl), 8vw, var(--spacing-3xl));
+  }
+  
+  /* Layout */
+  :root {
+    /* Container Widths */
+    --container-max-width: 75rem; /* 1200px */
+    --container-narrow: 60rem;    /* 960px */
+    
+    /* Grid */
+    --grid-gap: var(--spacing-md);
+    --grid-gap-lg: var(--spacing-lg);
+    
+    /* Z-index scale */
+    --z-negative: -1;
+    --z-elevate: 1;
+    --z-sticky: 100;
+    --z-drawer: 200;
+    --z-modal: 300;
+    --z-toast: 400;
+  }
+  
+  /* Borders & Shadows */
+  :root {
+    /* Border Radius */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 1rem;
+    --radius-full: 9999px;
+    
+    /* Borders */
+    --border-width-thin: 1px;
+    --border-width-thick: 2px;
+    --border-style: solid;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    
+    /* Focus Ring */
+    --focus-ring: 0 0 0 3px var(--color-focus-ring);
+  }
+  
+  /* Transitions */
+  :root {
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Dark Mode Overrides */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-background-primary: var(--color-umber);
+      --color-background-secondary: var(--color-umber-2);
+      --color-text-primary: var(--color-columbia);
+      --color-text-secondary: var(--color-cadet);
+      --color-surface-light: var(--color-umber-2);
+      --color-surface-muted: var(--color-umber);
+      --color-border: color-mix(in srgb, var(--color-cadet) 30%, black);
+    }
+  }

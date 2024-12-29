@@ -1,0 +1,118 @@
+---
+// src/components/buttons/IconButton.astro
+interface Props {
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  class?: string;
+  label: string;
+}
+
+const { 
+  variant = 'primary',
+  size = 'md',
+  type = 'button',
+  disabled = false,
+  label,
+  class: className,
+  ...rest
+} = Astro.props;
+---
+
+<button
+  type={type}
+  disabled={disabled}
+  aria-label={label}
+  class:list={[
+    'icon-button',
+    `button-${variant}`,
+    `size-${size}`,
+    className
+  ]}
+  {...rest}
+>
+  <span class="icon">
+    <slot />
+  </span>
+</button>
+
+<style>
+  .icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: var(--border-width-thin) solid transparent;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .icon-button:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .icon-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Sizes */
+  .size-sm {
+    padding: 0.5rem;
+  }
+
+  .size-md {
+    padding: 0.75rem;
+  }
+
+  .size-lg {
+    padding: 1rem;
+  }
+
+  /* Variants - using same styles as Button component */
+  .button-primary {
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  .button-primary:hover:not(:disabled) {
+    background-color: var(--color-primary-dark);
+  }
+
+  .button-secondary {
+    background-color: var(--color-cadet);
+    color: var(--color-umber);
+  }
+
+  .button-secondary:hover:not(:disabled) {
+    background-color: var(--color-columbia);
+  }
+
+  .button-outline {
+    background-color: transparent;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .button-outline:hover:not(:disabled) {
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  .button-ghost {
+    background-color: transparent;
+    color: var(--color-primary);
+  }
+
+  .button-ghost:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  }
+</style>

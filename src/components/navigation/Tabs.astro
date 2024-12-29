@@ -1,0 +1,240 @@
+---
+// src/components/navigation/Tabs.astro
+interface Tab {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  tabs: Tab[];
+  defaultTab?: string;
+  class?: string;
+}
+
+const { 
+  tabs, 
+  defaultTab = tabs[0]?.id,
+  class: className 
+} = Astro.props;
+---
+
+<div class:list={['tabs', className]}>
+  <div class="tabs-list" role="tablist">
+    {tabs.map(tab => (
+      <button
+        id={`tab-${tab.id}`}
+        role="tab"
+        aria-selected={tab.id === defaultTab}
+        aria-controls={`panel-${tab.id}`}
+        tabindex={tab.id === defaultTab ? 0 : -1}
+        class:list={[
+          'tab-button',
+          { 'active': tab.id === defaultTab }
+        ]}
+        data-tab-id={tab.id}
+      >
+        {tab.label}
+      </button>
+    ))}
+  </div>
+
+  <div class="tab-panels">
+    <slot />
+  </div>
+</div>
+
+<script>
+  class TabsController {
+    private tabList: HTMLElement;
+    private tabs: HTMLElement[];
+    private panels: HTMLElement[];
+
+    constructor(container: HTMLElement) {
+      this.tabList = container.querySelector('[role="tablist"]')!;
+      this.tabs = Array.from(container.querySelectorAll('[role="tab"]'));
+      this.panels = Array.from(container.querySelectorAll('[role="tabpanel"]'));
+      
+      this.init();
+    }
+
+    private init() {
+      // Handle click events
+      this.tabs.forEach(tab => {
+        tab.addEventListener('click', () => this.switchTab(tab));
+      });
+
+      // Handle keyboard navigation
+      this.tabList.addEventListener('keydown', (e) => {
+        const targetTab = e.target as HTMLElement;
+        if (!targetTab.matches('[role="tab"]')) return;
+
+        let newTab: HTMLElement | null = null;
+        const currentIdx = this.tabs.indexOf(targetTab);
+
+        switch (e.key) {
+          case 'ArrowLeft':
+            newTab = this.tabs[currentIdx - 1] || this.tabs[this.tabs.length - 1];
+            break;
+          case 'ArrowRight':
+            newTab = this.tabs[currentIdx + 1] || this.tabs[0];
+            break;
+          case 'Home':
+            newTab = this.tabs[0];
+            break;
+          case 'End':
+            newTab = this.tabs[this.tabs.length - 1];
+            break;
+        }
+
+        if (newTab) {
+          e.preventDefault();
+          this.switchTab(newTab);
+        }
+      });
+    }
+
+    private switchTab(newTab: HTMLElement) {
+      // Get current active tab
+      const currentTab = this.tabs.find(tab => 
+        tab.getAttribute('aria-selected') === 'true'
+      );
+      
+      if (currentTab === newTab) return;
+
+      // Update tabs
+      if (currentTab) {
+        currentTab.setAttribute('aria-selected', 'false');
+        currentTab.classList.remove('active');
+        currentTab.setAttribute('tabindex', '-1');
+      }
+
+      newTab.setAttribute('aria-selected', 'true');
+      newTab.classList.add('active');
+      newTab.setAttribute('tabindex', '0');
+      newTab.focus();
+
+      // Update panels
+      const newPanelId = newTab.getAttribute('aria-controls');
+      const currentPanelId = currentTab?.getAttribute('aria-controls');
+
+      if (currentPanelId) {
+        const currentPanel = document.getElementById(currentPanelId);
+        if (currentPanel) {
+          currentPanel.hidden = true;
+          currentPanel.classList.remove('active');
+        }
+      }
+
+      if (newPanelId) {
+        const newPanel = document.getElementById(newPanelId);
+        if (newPanel) {
+          newPanel.hidden = false;
+          newPanel.classList.add('active');
+        }
+      }
+    }
+  }
+
+  // Initialize all tab components
+  document.querySelectorAll('.tabs').forEach(tabs => {
+    new TabsController(tabs as HTMLElement);
+  });
+</script>
+
+<style>
+  .tabs {
+    width: 100%;
+  }
+
+  .tabs-list {
+    display: flex;
+    gap: var(--spacing-xs);
+    border-bottom: var(--border-width-thin) solid var(--color-border);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .tab-button {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: none;
+    border: none;
+    border-bottom: var(--border-width-thick) solid transparent;
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .tab-button:hover {
+    color: var(--color-text-primary);
+  }
+
+  .tab-button.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+  }
+
+  .tab-button:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: var(--radius-sm);
+  }
+
+  @media (max-width: 640px) {
+    .tabs-list {
+      flex-direction: column;
+      gap: var(--spacing-xs);
+      border-bottom: none;
+    }
+
+    .tab-button {
+      width: 100%;
+      text-align: left;
+      border-left: var(--border-width-thick) solid transparent;
+      border-bottom: var(--border-width-thin) solid var(--color-border);
+    }
+
+    .tab-button.active {
+      border-left-color: var(--color-primary);
+      border-bottom-color: var(--color-border);
+    }
+  }
+</style>
+
+---
+// src/components/navigation/TabPanel.astro
+interface Props {
+  id: string;
+  labelledBy: string;
+  active?: boolean;
+  class?: string;
+}
+
+const { 
+  id,
+  labelledBy,
+  active = false,
+  class: className 
+} = Astro.props;
+---
+
+<div
+  id={id}
+  role="tabpanel"
+  aria-labelledby={labelledBy}
+  class:list={['tab-panel', { active }, className]}
+  tabindex="0"
+  hidden={!active}
+>
+  <slot />
+</div>
+
+<style>
+  .tab-panel {
+    outline: none;
+  }
+
+  .tab-panel:focus-visible {
+    box-shadow: var(--focus-ring);
+    border-radius: var(--radius-sm);
+  }
+</style>

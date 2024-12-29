@@ -1,0 +1,48 @@
+---
+// src/layouts/BaseLayout.astro
+---
+interface Props {
+    title: string;
+    description?: string;
+  }
+  
+  const { 
+    title,
+    description = "Pinnacle Telecom and Data - Enterprise IT Solutions"
+  } = Astro.props;
+  ---
+  
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="utf-8" />
+      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+      <meta name="viewport" content="width=device-width" />
+      <meta name="description" content={description} />
+      <title>{title} | Pinnacle Telecom and Data</title>
+  
+      <!-- Global Styles -->
+      <link rel="stylesheet" href="/styles/index.css" />
+      
+      <!-- Vendor Styles -->
+      <link rel="stylesheet" href="/assets/vendor/boxicons/css/boxicons.min.css"/>
+    </head>
+    <body>
+      <slot name="header">
+        <Header />
+      </slot>
+  
+      <main>
+        <slot />
+      </main>
+  
+      <slot name="footer">
+        <Footer />
+      </slot>
+  
+      <!-- Base Scripts -->
+      <script src="/assets/js/theme.js"></script>
+    </body>
+  </html>
+  
+ 

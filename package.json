@@ -1,0 +1,16 @@
+{
+  "name": "pinnacle-telecom",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@storyblok/astro": "^5.1.2",
+    "astro": "^5.1.1",
+    "vite": "^6.0.6"
+  }
+}

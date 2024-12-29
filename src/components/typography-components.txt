@@ -1,0 +1,198 @@
+---
+// src/components/typography/Heading.astro
+interface Props {
+  level: 1 | 2 | 3 | 4 | 5 | 6;
+  class?: string;
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+}
+
+const { level = 1, class: className, as } = Astro.props;
+const Tag = as || `h${level}`;
+---
+
+<Tag class:list={['heading', `heading-${level}`, className]}>
+  <slot />
+</Tag>
+
+<style>
+  .heading {
+    margin: 0;
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-primary);
+  }
+
+  .heading-1 {
+    font-size: var(--font-size-4xl);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .heading-2 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .heading-3 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .heading-4 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .heading-5 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .heading-6 {
+    font-size: var(--font-size-base);
+    margin-bottom: var(--spacing-sm);
+  }
+</style>
+
+---
+// src/components/typography/Text.astro
+interface Props {
+  size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl';
+  weight?: 'normal' | 'medium' | 'semibold' | 'bold';
+  class?: string;
+  as?: keyof HTMLElementTagNameMap;
+}
+
+const { 
+  size = 'base', 
+  weight = 'normal',
+  as: Tag = 'p',
+  class: className 
+} = Astro.props;
+---
+
+<Tag class:list={['text', `text-${size}`, `weight-${weight}`, className]}>
+  <slot />
+</Tag>
+
+<style>
+  .text {
+    margin: 0;
+    line-height: var(--line-height-normal);
+    color: var(--color-text-primary);
+  }
+
+  .text-xs { font-size: var(--font-size-xs); }
+  .text-sm { font-size: var(--font-size-sm); }
+  .text-base { font-size: var(--font-size-base); }
+  .text-lg { font-size: var(--font-size-lg); }
+  .text-xl { font-size: var(--font-size-xl); }
+
+  .weight-normal { font-weight: var(--font-weight-normal); }
+  .weight-medium { font-weight: var(--font-weight-medium); }
+  .weight-semibold { font-weight: var(--font-weight-semibold); }
+  .weight-bold { font-weight: var(--font-weight-bold); }
+</style>
+
+---
+// src/components/typography/Link.astro
+interface Props {
+  href: string;
+  external?: boolean;
+  class?: string;
+}
+
+const { href, external = false, class: className } = Astro.props;
+const attrs = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+<a href={href} {...attrs} class:list={['link', className]}>
+  <slot />
+</a>
+
+<style>
+  .link {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .link:hover {
+    color: var(--color-hover);
+    text-decoration: underline;
+  }
+
+  .link:active {
+    color: var(--color-active);
+  }
+
+  .link:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+</style>
+
+---
+// src/components/typography/Badge.astro
+interface Props {
+  variant?: 'primary' | 'secondary' | 'success' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const { 
+  variant = 'primary',
+  size = 'md',
+  class: className 
+} = Astro.props;
+---
+
+<span class:list={['badge', `badge-${variant}`, `size-${size}`, className]}>
+  <slot />
+</span>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .size-sm {
+    font-size: var(--font-size-xs);
+    padding: 0.25em 0.625em;
+  }
+
+  .size-md {
+    font-size: var(--font-size-sm);
+    padding: 0.375em 0.75em;
+  }
+
+  .size-lg {
+    font-size: var(--font-size-base);
+    padding: 0.5em 1em;
+  }
+
+  .badge-primary {
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  .badge-secondary {
+    background-color: var(--color-cadet);
+    color: var(--color-umber);
+  }
+
+  .badge-success {
+    background-color: #22c55e;
+    color: white;
+  }
+
+  .badge-danger {
+    background-color: #ef4444;
+    color: white;
+  }
+</style>

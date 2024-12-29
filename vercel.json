@@ -1,0 +1,28 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "package.json",
+        "use": "@vercel/static-build",
+        "config": {
+          "buildCommand": "npm run build"
+        }
+      }
+    ],
+    "env": {
+      "STORYBLOK_TOKEN": "@storyblok-preview-token",
+      "PUBLIC_STORYBLOK_TOKEN": "@storyblok-public-token",
+      "ENABLE_VISUAL_EDITOR": "true"
+    },
+    "routes": [
+      {
+        "src": "/_storyblok(.*)",
+        "headers": {
+          "Access-Control-Allow-Origin": "*"
+        },
+        "continue": true
+      },
+      { "handle": "filesystem" },
+      { "src": "/(.*)", "dest": "/404" }
+    ]
+  }
