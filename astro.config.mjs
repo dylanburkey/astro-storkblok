@@ -6,7 +6,6 @@ import storyblok from '@storyblok/astro';
 export default defineConfig({
   integrations: [
     storyblok({
-      accessToken: process.env.PUBLIC_STORYBLOK_TOKEN,
       apiOptions: {
         region: 'us',
       },
