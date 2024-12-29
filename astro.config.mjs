@@ -1,6 +1,7 @@
 // astro.config.mjs
 import { defineConfig } from 'astro/config';
 import storyblok from '@storyblok/astro';
+//
 
 export default defineConfig({
   integrations: [
